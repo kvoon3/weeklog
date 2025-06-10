@@ -1,8 +1,9 @@
-# Starter TS
+# Weeklog
 
-Kevin Kwong's typescript lib starter
+Generate changelog last week. powered by [changelogen](https://github.com/unjs/changelogen)
 
-Replace:
+## Usage
 
-- `starter-ts`
-- `__DESCRIPTION__`
+```ts
+npx weeklog
+```
