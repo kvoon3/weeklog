@@ -25,7 +25,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "release": "nlx bumpp && npm publish",
+    "release": "nlx bumpp && pnpm publish",
     "postinstall": "nr build"
   },
   "dependencies": {
