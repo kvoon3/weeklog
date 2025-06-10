@@ -1,0 +1,29 @@
+diff --git a/dist/index.d.mts b/dist/index.d.mts
+index bca1e5734784c8c942233de46f9ef7c7de3bb2f3..26d6bb91f563f1d017c0c97a4ab7be1951be2166 100644
+--- a/dist/index.d.mts
++++ b/dist/index.d.mts
+@@ -81,7 +81,7 @@ declare function getCurrentGitTag(cwd?: string): string;
+ declare function getCurrentGitRef(cwd?: string): string;
+ declare function getGitRemoteURL(cwd: string, remote?: string): string;
+ declare function getCurrentGitStatus(cwd?: string): Promise<string>;
+-declare function getGitDiff(from: string | undefined, to?: string, cwd?: string): Promise<RawGitCommit[]>;
++declare function getGitDiff(since: string, cwd?: string): Promise<RawGitCommit[]>;
+ declare function parseCommits(commits: RawGitCommit[], config: ChangelogConfig): GitCommit[];
+ declare function parseGitCommit(commit: RawGitCommit, config: ChangelogConfig): GitCommit | null;
+ 
+diff --git a/dist/shared/changelogen.DQzK2u9H.mjs b/dist/shared/changelogen.DQzK2u9H.mjs
+index c2e42d5339ed9e5e21ffc5ecf00ac8135d67cde6..e87af5d61d71c008a105ad1b263e1ee9ba4ee3b7 100644
+--- a/dist/shared/changelogen.DQzK2u9H.mjs
++++ b/dist/shared/changelogen.DQzK2u9H.mjs
+@@ -38,9 +38,9 @@ function getGitRemoteURL(cwd, remote = "origin") {
+ async function getCurrentGitStatus(cwd) {
+   return execCommand("git status --porcelain", cwd);
+ }
+-async function getGitDiff(from, to = "HEAD", cwd) {
++async function getGitDiff(since, cwd) {
+   const r = execCommand(
+-    `git --no-pager log "${from ? `${from}...` : ""}${to}" --pretty="----%n%s|%h|%an|%ae%n%b" --name-status`,
++    `git --no-pager log --since="${since}" --pretty="----%n%s|%h|%an|%ae%n%b" --name-status`,
+     cwd
+   );
+   return r.split("----\n").splice(1).map((line) => {

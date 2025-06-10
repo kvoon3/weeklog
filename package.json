@@ -1,0 +1,55 @@
+{
+  "name": "weeklog",
+  "type": "module",
+  "version": "0.0.0",
+  "packageManager": "pnpm@10.11.0",
+  "description": "__DESCRIPTION__",
+  "author": "Kevin Kwong <kvoon@duck.com>",
+  "license": "MIT",
+  "keywords": [],
+  "exports": {
+    "types": "./dist/index.d.ts",
+    "import": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": "./bin/cli.js",
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "scripts": {
+    "dev": "tsdown --watch",
+    "build": "tsdown",
+    "up": "nlx taze -I major",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "publish": "nlx bumpp && npm publish",
+    "postinstall": "nr build"
+  },
+  "dependencies": {
+    "@types/node": "catalog:types",
+    "cac": "catalog:utils",
+    "changelogen": "catalog:utils",
+    "tinyexec": "catalog:utils",
+    "tinyglobby": "catalog:utils"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "catalog:cli",
+    "@antfu/ni": "catalog:cli",
+    "@antfu/nip": "catalog:cli",
+    "eslint": "catalog:cli",
+    "lint-staged": "catalog:cli",
+    "simple-git-hooks": "catalog:cli",
+    "tsdown": "catalog:cli",
+    "tsx": "catalog:cli",
+    "typescript": "catalog:cli"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm exec lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint . --fix"
+  }
+}

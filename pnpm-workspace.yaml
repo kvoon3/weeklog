@@ -1,0 +1,20 @@
+patchedDependencies:
+  changelogen: patches/changelogen.patch
+catalogs:
+  cli:
+    '@antfu/eslint-config': ^4.13.2
+    '@antfu/ni': ^25.0.0
+    '@antfu/nip': latest
+    eslint: ^9.27.0
+    lint-staged: ^16.0.0
+    simple-git-hooks: ^2.13.0
+    tsdown: ^0.12.4
+    tsx: latest
+    typescript: ^5.8.3
+  types:
+    '@types/node': ^22.15.30
+  utils:
+    cac: ^6.7.14
+    changelogen: ^0.6.1
+    tinyexec: ^1.0.1
+    tinyglobby: ^0.2.14
