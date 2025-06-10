@@ -1,7 +1,7 @@
 {
   "name": "weeklog",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "packageManager": "pnpm@10.11.0",
   "description": "__DESCRIPTION__",
   "author": "Kevin Kwong <kvoon@duck.com>",
