@@ -5,6 +5,9 @@ export default defineConfig({
     './src/index.ts',
     './src/cli.ts',
   ],
+  noExternal: [
+    'changelogen',
+  ],
   publint: true,
   platform: 'node',
 })
