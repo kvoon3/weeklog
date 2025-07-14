@@ -4,21 +4,14 @@ import { name, version } from '../package.json'
 
 const cli = cac(name)
 
-export interface Args {
-  name?: string
-  rewrite?: boolean
-  startWeek?: number
-  since?: string
-}
-
-cli
-  .command('', 'run')
-  .option('--name', 'project name')
-  .option('--rewrite', 'rewrite last changelog')
-  .option('--since', 'commits more recent than a specific date.')
-  .option('--startWeek', 'start week number')
-  .action((_, args: Args) => {
-    run(args)
+cli.command('[...cwd]', 'projects root')
+  .option('--dry-run', 'dry')
+  .option('--output [dir]', 'output dir')
+  .action((cwd, options) => {
+    run({
+      cwd,
+      ...options,
+    })
   })
 
 cli.help()

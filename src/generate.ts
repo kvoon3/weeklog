@@ -1,14 +1,28 @@
-import { generateMarkDown, getGitDiff, parseCommits } from 'changelogen'
+import { generateMarkDown, parseCommits } from 'changelogen'
 import { config } from './config'
+import { getGitDiff } from './vender/git'
 
-export async function generate(since: string): Promise<string> {
-  const rawCommits = await getGitDiff(since)
-  const commits = parseCommits(rawCommits, config)
-  delete config.repo
-  const content = generateMarkDown(commits, {
-    ...config,
-    repo: {},
-  })
+export async function generate(since: string, until: string, cwd = './'): Promise<string> {
+  try {
+    const rawCommits = await getGitDiff(since, until, cwd)
+    const commits = parseCommits(rawCommits, {
+      ...config,
+      cwd,
+    })
 
-  return content
+    if (!commits.length)
+      return ''
+
+    delete config.repo
+    const content = generateMarkDown(commits, {
+      ...config,
+      repo: {},
+    })
+
+    return content
+  }
+  catch (error) {
+    console.error('error', error)
+    return ''
+  }
 }

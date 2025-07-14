@@ -2,7 +2,7 @@
   "name": "weeklog",
   "type": "module",
   "version": "0.0.4",
-  "packageManager": "pnpm@10.11.0",
+  "packageManager": "pnpm@10.13.1",
   "description": "__DESCRIPTION__",
   "author": "Kevin Kwong <kvoon@duck.com>",
   "license": "MIT",
@@ -19,6 +19,7 @@
     "dist"
   ],
   "scripts": {
+    "start": "node bin/cli.js",
     "dev": "tsdown --watch",
     "build": "tsdown",
     "up": "nlx taze -I major",
@@ -29,16 +30,19 @@
     "postinstall": "nr build"
   },
   "dependencies": {
-    "@types/node": "catalog:types",
-    "cac": "catalog:utils",
     "changelogen": "catalog:utils",
+    "date-fns": "catalog:utils",
+    "picocolors": "catalog:utils",
     "tinyexec": "catalog:utils",
     "tinyglobby": "catalog:utils"
   },
   "devDependencies": {
+    "cac": "catalog:utils",
     "@antfu/eslint-config": "catalog:cli",
+    "@types/node": "catalog:types",
     "@antfu/ni": "catalog:cli",
     "@antfu/nip": "catalog:cli",
+    "@antfu/utils": "catalog:utils",
     "eslint": "catalog:cli",
     "lint-staged": "catalog:cli",
     "simple-git-hooks": "catalog:cli",

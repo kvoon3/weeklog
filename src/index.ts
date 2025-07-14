@@ -1,37 +1,103 @@
-import type { Args } from './cli'
-import { writeFile } from 'node:fs/promises'
-import { glob } from 'tinyglobby'
+import { accessSync } from 'node:fs'
+import { mkdir, writeFile } from 'node:fs/promises'
+import { basename, resolve } from 'node:path'
+import { toArray } from '@antfu/utils'
+import { endOfWeek, formatISO, getISOWeek, startOfWeek, subWeeks } from 'date-fns'
+import c from 'picocolors'
+import { globSync } from 'tinyglobby'
 import { generate } from './generate'
 
-export async function run(options: Args): Promise<void> {
+export async function run(options?: {
+  days?: number
+  cwd?: string | string[]
+  output?: string
+  dryRun: boolean
+}): Promise<void> {
   const {
-    rewrite = false,
-    startWeek = 0,
-    since = '7 days age',
-    name = '',
+    cwd = './',
+    output = './',
+    dryRun = false,
   } = options || {}
+  const cwds = toArray(cwd)
 
-  const changelogs = await glob('./CHANGELOG*')
+  const paths = cwds.flatMap(getProjectPaths)
 
-  const lastWeek = Math.max(
-    startWeek,
-    ...changelogs.map(name =>
-      Number(name.split('.')[1]),
-    ),
+  const lines: string[] = [
+
+  ]
+
+  const { since, until, weekNumber } = getLastWeekInfo()
+
+  for (const path of paths) {
+    const content = await generate(since, until, path)
+
+    if (content) {
+      lines.push(
+        `## ${basename(path)}`,
+        content.replace('## ...', '').trim(),
+      )
+
+      console.log(c.green('Commit Detected:'), path)
+    }
+  }
+
+  await makeSureDir(output)
+
+  const content = lines
+    .join('\n\n')
+
+  if (dryRun) {
+    console.log(content)
+    return
+  }
+
+  const filepath = resolve(output, `CHANGELOG.${weekNumber}.md`)
+
+  await writeFile(
+    filepath,
+    content,
   )
 
-  const week = rewrite ? lastWeek : lastWeek + 1
+  console.log(`${c.bgGreen('Done')}: ${c.green(filepath)}`)
+}
 
-  const filename = `CHANGELOG.${week}.md`
+function getProjectPaths(cwd: string): string[] {
+  return (globSync(['*', '!node_modules'], {
+    cwd,
+    onlyDirectories: true,
+    deep: 1,
+  }))
+    .filter((d) => {
+      const toFilepath = (filename: string): string => resolve(cwd, d, filename)
+      return [toFilepath('package.json'), toFilepath('.git')].every(path => isAccessible(path))
+    })
+    .map(i => resolve(cwd, i))
+}
 
-  const header = [
-    `# 第 ${week} 周`,
-    name ? `项目：${name}` : '',
-  ]
-  const content = [
-    ...header,
-    (await generate(since)).trim(),
-  ].filter(i => i !== '').join('\n\n')
+function isAccessible(path: string): boolean {
+  try {
+    accessSync(path)
+    return true
+  }
+  catch {
+    return false
+  }
+}
 
-  writeFile(filename, content)
+export async function makeSureDir(dir: string): Promise<void> {
+  if (!isAccessible(dir))
+    await mkdir(dir, { recursive: true })
+}
+
+function getLastWeekInfo(): { weekNumber: number, since: string, until: string } {
+  const now = new Date()
+  const weekNumber = getISOWeek(now) - 1
+  const since = formatISO(startOfWeek(subWeeks(now, 1), { weekStartsOn: 1 }))
+  const until = formatISO(endOfWeek(subWeeks(now, 1), { weekStartsOn: 1 }))
+
+  return {
+    weekNumber,
+    since,
+    until,
+  }
 }
