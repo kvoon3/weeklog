@@ -37,12 +37,12 @@
     "tinyglobby": "catalog:utils"
   },
   "devDependencies": {
-    "cac": "catalog:utils",
     "@antfu/eslint-config": "catalog:cli",
-    "@types/node": "catalog:types",
     "@antfu/ni": "catalog:cli",
     "@antfu/nip": "catalog:cli",
     "@antfu/utils": "catalog:utils",
+    "@types/node": "catalog:types",
+    "cac": "catalog:utils",
     "eslint": "catalog:cli",
     "lint-staged": "catalog:cli",
     "simple-git-hooks": "catalog:cli",

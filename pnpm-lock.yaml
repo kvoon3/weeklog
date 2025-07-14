@@ -4,6 +4,62 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  cli:
+    '@antfu/eslint-config':
+      specifier: ^4.16.2
+      version: 4.13.2
+    '@antfu/ni':
+      specifier: ^25.0.0
+      version: 25.0.0
+    '@antfu/nip':
+      specifier: latest
+      version: 0.1.0
+    eslint:
+      specifier: ^9.31.0
+      version: 9.27.0
+    lint-staged:
+      specifier: ^16.1.2
+      version: 16.0.0
+    simple-git-hooks:
+      specifier: ^2.13.0
+      version: 2.13.0
+    tsdown:
+      specifier: ^0.12.9
+      version: 0.12.4
+    tsx:
+      specifier: latest
+      version: 4.19.4
+    typescript:
+      specifier: ^5.8.3
+      version: 5.8.3
+  types:
+    '@types/node':
+      specifier: ^22.16.3
+      version: 22.15.30
+  utils:
+    '@antfu/utils':
+      specifier: ^9.2.0
+      version: 9.2.0
+    cac:
+      specifier: ^6.7.14
+      version: 6.7.14
+    changelogen:
+      specifier: ^0.6.2
+      version: 0.6.1
+    date-fns:
+      specifier: ^4.1.0
+      version: 4.1.0
+    picocolors:
+      specifier: ^1.1.1
+      version: 1.1.1
+    tinyexec:
+      specifier: ^1.0.1
+      version: 1.0.1
+    tinyglobby:
+      specifier: ^0.2.14
+      version: 0.2.14
+
 importers:
 
   .:
@@ -60,12 +116,6 @@ importers:
       typescript:
         specifier: catalog:cli
         version: 5.8.3
-
-  playground:
-    devDependencies:
-      weeklog:
-        specifier: ^0.1.0
-        version: 0.1.0
 
 packages:
 
@@ -831,10 +881,6 @@ packages:
 
   changelogen@0.6.1:
     resolution: {integrity: sha512-rTw2bZgiEHMgyYzWFMH+qTMFOSpCf4qwmd8LyxLDUKCtL4T/7O7978tPPtKYpjiFbPoHG64y4ugdF0Mt/l+lQg==}
-    hasBin: true
-
-  changelogen@0.6.2:
-    resolution: {integrity: sha512-QtC7+r9BxoUm+XDAwhLbz3CgU134J1ytfE3iCpLpA4KFzX2P1e6s21RrWDwUBzfx66b1Rv+6lOA2nS2btprd+A==}
     hasBin: true
 
   character-entities@2.0.2:
@@ -2089,10 +2135,6 @@ packages:
     peerDependencies:
       eslint: ^8.57.0 || ^9.0.0
 
-  weeklog@0.1.0:
-    resolution: {integrity: sha512-wptje2BliDhuCUD5uk/Y3+qO19BWAZdJ3JoRen9LIaQHEnLmWmnsmpeGva9nTNV4/XbrkF9vrqOqx/AEDxGe9g==}
-    hasBin: true
-
   which@2.0.2:
     resolution: {integrity: sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA==}
     engines: {node: '>= 8'}
@@ -2842,24 +2884,6 @@ snapshots:
       open: 10.1.2
       pathe: 2.0.3
       pkg-types: 2.1.0
-      scule: 1.3.0
-      semver: 7.7.2
-      std-env: 3.9.0
-    transitivePeerDependencies:
-      - magicast
-
-  changelogen@0.6.2:
-    dependencies:
-      c12: 3.0.4
-      confbox: 0.2.2
-      consola: 3.4.2
-      convert-gitmoji: 0.1.5
-      mri: 1.2.0
-      node-fetch-native: 1.6.6
-      ofetch: 1.4.1
-      open: 10.1.2
-      pathe: 2.0.3
-      pkg-types: 2.2.0
       scule: 1.3.0
       semver: 7.7.2
       std-env: 3.9.0
@@ -4360,16 +4384,6 @@ snapshots:
       semver: 7.7.2
     transitivePeerDependencies:
       - supports-color
-
-  weeklog@0.1.0:
-    dependencies:
-      changelogen: 0.6.2
-      date-fns: 4.1.0
-      picocolors: 1.1.1
-      tinyexec: 1.0.1
-      tinyglobby: 0.2.14
-    transitivePeerDependencies:
-      - magicast
 
   which@2.0.2:
     dependencies:
