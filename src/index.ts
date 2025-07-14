@@ -12,11 +12,13 @@ export async function run(options?: {
   cwd?: string | string[]
   output?: string
   dryRun: boolean
+  offset?: number
 }): Promise<void> {
   const {
     cwd = './',
     output = './',
     dryRun = false,
+    offset,
   } = options || {}
   const cwds = toArray(cwd)
 
@@ -26,7 +28,7 @@ export async function run(options?: {
 
   ]
 
-  const { since, until, weekNumber } = getLastWeekInfo()
+  const { since, until, weekNumber } = getWeekInfo(offset)
 
   for (const path of paths) {
     const content = await generate(since, until, path)
@@ -52,6 +54,12 @@ export async function run(options?: {
   }
 
   const filepath = resolve(output, `CHANGELOG.${weekNumber}.md`)
+
+
+  if (!content) {
+    console.log(c.yellow('Not find git commits'))
+    return
+  }
 
   await writeFile(
     filepath,
@@ -89,11 +97,11 @@ export async function makeSureDir(dir: string): Promise<void> {
     await mkdir(dir, { recursive: true })
 }
 
-function getLastWeekInfo(): { weekNumber: number, since: string, until: string } {
+function getWeekInfo(offset = 0): { weekNumber: number, since: string, until: string } {
   const now = new Date()
-  const weekNumber = getISOWeek(now) - 1
-  const since = formatISO(startOfWeek(subWeeks(now, 1), { weekStartsOn: 1 }))
-  const until = formatISO(endOfWeek(subWeeks(now, 1), { weekStartsOn: 1 }))
+  const weekNumber = getISOWeek(now) - offset
+  const since = formatISO(startOfWeek(subWeeks(now, offset), { weekStartsOn: 1 }))
+  const until = formatISO(endOfWeek(subWeeks(now, offset), { weekStartsOn: 1 }))
 
   return {
     weekNumber,

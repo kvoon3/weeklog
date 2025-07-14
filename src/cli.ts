@@ -7,6 +7,7 @@ const cli = cac(name)
 cli.command('[...cwd]', 'projects root')
   .option('--dry-run', 'dry')
   .option('--output [dir]', 'output dir')
+  .option('--offset [offset]', 'offset week number')
   .action((cwd, options) => {
     run({
       cwd,
