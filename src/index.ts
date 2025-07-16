@@ -75,7 +75,7 @@ export async function run(options?: {
   if(all)
     getAllWeekRange(date).forEach(genWeeklog)
   else
-    getWeekRange(date)
+    genWeeklog(getWeekRange(date))
 }
 
 function getProjectPaths(cwd: string): string[] {
