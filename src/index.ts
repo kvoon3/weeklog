@@ -12,13 +12,14 @@ export async function run(options?: {
   cwd?: string | string[]
   output?: string
   dryRun: boolean
-  offset?: number
+  weeksBack?: number
+  all?: boolean
 }): Promise<void> {
   const {
     cwd = './',
     output = './',
     dryRun = false,
-    offset,
+    weeksBack = 0,
   } = options || {}
   const cwds = toArray(cwd)
 
@@ -28,7 +29,9 @@ export async function run(options?: {
 
   ]
 
-  const { since, until, weekNumber } = getWeekInfo(offset)
+  const now = new Date()
+  const date = subWeeks(now, weeksBack)
+  const { since, until, weekNumber } = getWeekInfo(date)
 
   for (const path of paths) {
     const content = await generate(since, until, path)
@@ -97,11 +100,10 @@ export async function makeSureDir(dir: string): Promise<void> {
     await mkdir(dir, { recursive: true })
 }
 
-function getWeekInfo(offset = 0): { weekNumber: number, since: string, until: string } {
-  const now = new Date()
-  const weekNumber = getISOWeek(now) - offset
-  const since = formatISO(startOfWeek(subWeeks(now, offset), { weekStartsOn: 1 }))
-  const until = formatISO(endOfWeek(subWeeks(now, offset), { weekStartsOn: 1 }))
+function getWeekInfo(date: Date): { weekNumber: number, since: string, until: string } {
+  const weekNumber = getISOWeek(date)
+  const since = formatISO(startOfWeek(date, { weekStartsOn: 1 }))
+  const until = formatISO(endOfWeek(date, { weekStartsOn: 1 }))
 
   return {
     weekNumber,
