@@ -9,6 +9,7 @@ cli.command('[...cwd]', 'projects root')
   .option('--output [dir]', 'Output dir')
   .option('--weeks-back <n>', 'How many weeks back to include', { default: 0 })
   .option('--all', 'Generate all weeks of this year', { default: 0 })
+  .option('--copy', 'Copy into clipboard', { default: 0 })
   .action((cwd, options) => {
     run({
       cwd,

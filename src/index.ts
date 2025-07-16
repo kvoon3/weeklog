@@ -7,6 +7,7 @@ import c from 'picocolors'
 import { globSync } from 'tinyglobby'
 import { generate } from './generate'
 import { getAllWeekRange, getWeekRange, type WeekRange } from './utils'
+import clipboard from 'clipboardy'
 
 export async function run(options?: {
   days?: number
@@ -15,6 +16,7 @@ export async function run(options?: {
   dryRun: boolean
   weeksBack?: number
   all?: boolean
+  copy?: boolean
 }): Promise<void> {
   const {
     cwd = './',
@@ -22,6 +24,7 @@ export async function run(options?: {
     dryRun = false,
     weeksBack = 0,
     all,
+    copy: isCopy
   } = options || {}
   const cwds = toArray(cwd)
 
@@ -50,10 +53,8 @@ export async function run(options?: {
     const content = lines
       .join('\n\n')
 
-    if (dryRun) {
-      console.log(content)
-      return
-    }
+    if(isCopy)
+      clipboard.writeSync(content)
 
     const filepath = resolve(output, `CHANGELOG.${weekNum}.md`)
 
@@ -62,17 +63,24 @@ export async function run(options?: {
       return
     }
 
-    await writeFile(
-      filepath,
-      content,
-    )
+    if (dryRun) {
+      console.log(content)
+      return
+    }
+    else {
+      await writeFile(
+        filepath,
+        content,
+      )
 
-    console.log(`${c.bgGreen('Done')}: ${c.green(filepath)}`)
+      console.log(`${c.bgGreen('Done')}: ${c.green(filepath)}`)
+    }
+
   }
 
   const now = new Date()
   const date = subWeeks(now, weeksBack)
-  if(all)
+  if (all)
     getAllWeekRange(date).forEach(genWeeklog)
   else
     genWeeklog(getWeekRange(date))
