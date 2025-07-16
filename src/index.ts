@@ -2,7 +2,7 @@ import { accessSync } from 'node:fs'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { basename, resolve } from 'node:path'
 import { toArray } from '@antfu/utils'
-import { endOfWeek, formatISO, getISOWeek, startOfWeek, subWeeks } from 'date-fns'
+import { formatISO, subWeeks } from 'date-fns'
 import c from 'picocolors'
 import { globSync } from 'tinyglobby'
 import { generate } from './generate'
@@ -104,16 +104,4 @@ function isAccessible(path: string): boolean {
 export async function makeSureDir(dir: string): Promise<void> {
   if (!isAccessible(dir))
     await mkdir(dir, { recursive: true })
-}
-
-function getWeekInfo(date: Date): { weekNumber: number, since: string, until: string } {
-  const weekNumber = getISOWeek(date)
-  const since = formatISO(startOfWeek(date, { weekStartsOn: 1 }))
-  const until = formatISO(endOfWeek(date, { weekStartsOn: 1 }))
-
-  return {
-    weekNumber,
-    since,
-    until,
-  }
 }
