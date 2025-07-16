@@ -6,6 +6,7 @@ import { endOfWeek, formatISO, getISOWeek, startOfWeek, subWeeks } from 'date-fn
 import c from 'picocolors'
 import { globSync } from 'tinyglobby'
 import { generate } from './generate'
+import { getAllWeekRange, getWeekRange, type WeekRange } from './utils'
 
 export async function run(options?: {
   days?: number
@@ -20,6 +21,7 @@ export async function run(options?: {
     output = './',
     dryRun = false,
     weeksBack = 0,
+    all,
   } = options || {}
   const cwds = toArray(cwd)
 
@@ -29,47 +31,52 @@ export async function run(options?: {
 
   ]
 
+  const genWeeklog = async (weekRange: WeekRange) => {
+    const { start: since, end: until, weekNum } = weekRange
+
+    for (const path of paths) {
+      const content = await generate(formatISO(since), formatISO(until), path)
+
+      if (content) {
+        lines.push(
+          `## ${basename(path)}`,
+          content.replace('## ...', '').trim(),
+        )
+
+        console.log(c.green('Commit Detected:'), path)
+      }
+    }
+    await makeSureDir(output)
+
+    const content = lines
+      .join('\n\n')
+
+    if (dryRun) {
+      console.log(content)
+      return
+    }
+
+    const filepath = resolve(output, `CHANGELOG.${weekNum}.md`)
+
+    if (!content) {
+      console.log(c.yellow('Not find git commits'))
+      return
+    }
+
+    await writeFile(
+      filepath,
+      content,
+    )
+
+    console.log(`${c.bgGreen('Done')}: ${c.green(filepath)}`)
+  }
+
   const now = new Date()
   const date = subWeeks(now, weeksBack)
-  const { since, until, weekNumber } = getWeekInfo(date)
-
-  for (const path of paths) {
-    const content = await generate(since, until, path)
-
-    if (content) {
-      lines.push(
-        `## ${basename(path)}`,
-        content.replace('## ...', '').trim(),
-      )
-
-      console.log(c.green('Commit Detected:'), path)
-    }
-  }
-
-  await makeSureDir(output)
-
-  const content = lines
-    .join('\n\n')
-
-  if (dryRun) {
-    console.log(content)
-    return
-  }
-
-  const filepath = resolve(output, `CHANGELOG.${weekNumber}.md`)
-
-
-  if (!content) {
-    console.log(c.yellow('Not find git commits'))
-    return
-  }
-
-  await writeFile(
-    filepath,
-    content,
-  )
-
-  console.log(`${c.bgGreen('Done')}: ${c.green(filepath)}`)
+  if(all)
+    getAllWeekRange(date).forEach(genWeeklog)
+  else
+    getWeekRange(date)
 }
 
 function getProjectPaths(cwd: string): string[] {

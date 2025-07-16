@@ -22,6 +22,7 @@
     "start": "node bin/cli.js",
     "dev": "tsdown --watch",
     "build": "tsdown",
+    "test": "vitest",
     "up": "nlx taze -I major",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
@@ -48,7 +49,8 @@
     "simple-git-hooks": "catalog:cli",
     "tsdown": "catalog:cli",
     "tsx": "catalog:cli",
-    "typescript": "catalog:cli"
+    "typescript": "catalog:cli",
+    "vitest": "catalog:"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm exec lint-staged"

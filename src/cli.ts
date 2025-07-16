@@ -5,9 +5,10 @@ import { name, version } from '../package.json'
 const cli = cac(name)
 
 cli.command('[...cwd]', 'projects root')
-  .option('--dry-run', 'dry')
-  .option('--output [dir]', 'output dir')
-  .option('--weeks-back <n>', 'how many weeks back to include', { default: 0 })
+  .option('--dry-run', 'Output only')
+  .option('--output [dir]', 'Output dir')
+  .option('--weeks-back <n>', 'How many weeks back to include', { default: 0 })
+  .option('--all', 'Generate all weeks of this year', { default: 0 })
   .action((cwd, options) => {
     run({
       cwd,
