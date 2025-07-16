@@ -27,12 +27,11 @@ export async function run(options?: {
 
   const paths = cwds.flatMap(getProjectPaths)
 
-  const lines: string[] = [
-
-  ]
-
   const genWeeklog = async (weekRange: WeekRange) => {
     const { start: since, end: until, weekNum } = weekRange
+    const lines: string[] = [
+
+    ]
 
     for (const path of paths) {
       const content = await generate(formatISO(since), formatISO(until), path)
