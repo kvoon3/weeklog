@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "changelogen": "catalog:utils",
-    "clipboardy": "^4.0.0",
+    "clipboardy": "catalog:utils",
     "date-fns": "catalog:utils",
     "picocolors": "catalog:utils",
     "tinyexec": "catalog:utils",
@@ -51,7 +51,7 @@
     "tsdown": "catalog:cli",
     "tsx": "catalog:cli",
     "typescript": "catalog:cli",
-    "vitest": "catalog:"
+    "vitest": "catalog:test"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm exec lint-staged"

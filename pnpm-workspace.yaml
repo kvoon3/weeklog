@@ -9,15 +9,16 @@ catalogs:
     tsdown: ^0.12.9
     tsx: latest
     typescript: ^5.8.3
+  test:
+    vitest: ^3.2.4
   types:
     '@types/node': ^22.16.3
   utils:
     '@antfu/utils': ^9.2.0
     cac: ^6.7.14
     changelogen: ^0.6.2
+    clipboardy: ^4.0.0
     date-fns: ^4.1.0
     picocolors: ^1.1.1
     tinyexec: ^1.0.1
     tinyglobby: ^0.2.14
-catalog:
-  vitest: ^3.2.4
